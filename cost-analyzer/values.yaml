@@ -14,3 +14,16 @@ global:
       fqdn: http://cost-analyzer-prometheus-server.default.svc.cluster.local #example fqdn. Ignored if prometheus.enabled: true
   podAnnotations: {}
     # iam.amazonaws.com/role: role-arn
+Ingress:
+  enable: false
+  HostName: kubecost.example.com
+  ApiVersion: extensions/v1beta1
+  Annotations:
+  # kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+
+  TLS:
+  - secretName: kubecost.example.com-tls
+    hosts:
+      - kubecost.example.com
+

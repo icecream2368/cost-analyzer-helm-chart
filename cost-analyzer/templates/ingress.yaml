@@ -1,0 +1,25 @@
+{{- if .Values.Ingress.enable }}
+apiVersion: {{ .Values.Ingress.ApiVersion }}
+kind: Ingress
+metadata:
+{{- if .Values.Ingress.Annotations }}
+  annotations:
+{{ toYaml .Values.Ingress.Annotations | indent 4 }}
+{{- end }}
+  name: {{ template "cost-analyzer.fullname" . }}
+spec:
+  rules:
+  - host: {{ .Values.Ingress.HostName | quote }}
+    http:
+      paths:
+      - backend:
+          serviceName: {{ template "cost-analyzer.fullname" . }}
+          servicePort: 9090
+{{- if .Values.Ingress.Path }}
+        path: {{ .Values.Ingress.Path }}
+{{- end -}}
+{{- if .Values.Ingress.TLS }}
+  tls:
+{{ toYaml .Values.Ingress.TLS | indent 4 }}
+{{- end -}}
+{{- end }}
